@@ -1,0 +1,21 @@
+{
+  "name": "@oneflow/lab1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/complex.js": "^2.0.1",
+    "complex.js": "^2.0.11",
+    "express": "^4.17.1",
+    "typescript": "^3.9.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3"
+  }
+}

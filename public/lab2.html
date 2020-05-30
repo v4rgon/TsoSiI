@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(calculate);
+
+      async function calculate() {
+        const n = document.getElementById('ft-n').value;
+        const res = await fetch(`http://localhost:3033/calculateL2?n=${n}`).then(res => res.json());
+        const { original, convolution, correlation } = res.result;
+        draw(original.f1, 'Original F1', 'originalf1');
+        draw(original.f2, 'Original F2', 'originalf2');
+        draw(convolution.plain, 'Convolution', 'convolution-plain');
+        draw(convolution.fft, 'Convolution FFT', 'convolution-fft');
+        draw(correlation.plain, 'Correlation', 'correlation-plain');
+        draw(correlation.fft, 'Correlation FFT', 'correlation-fft');
+        document.getElementById('quantity-results').innerText = 
+        `Convolution: ${convolution.plainQuantity} muls, Convolution FFT: ${convolution.fftQuantity} muls. FFT faster in ${(convolution.plainQuantity/convolution.fftQuantity).toFixed(3)} times.
+        Correlation: ${correlation.plainQuantity} muls, Correlation FFT: ${correlation.fftQuantity} muls. FFT faster in ${(correlation.plainQuantity/correlation.fftQuantity).toFixed(3)} times.`
+      };
+
+      const transformX = (x,n) => 2 * x * Math.PI / n;
+
+      function draw(data, title, elemId) {
+        const chartData = data.map((y, i) => [transformX(i, data.length), y]);
+        var originalChart = new google.visualization.DataTable();
+        originalChart.addColumn('number', 'X');
+        originalChart.addColumn('number', 'Y');
+        originalChart.addRows(chartData);
+        
+        var options = {
+          title: title,
+          curveType: 'function',
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(elemId));
+
+        chart.draw(originalChart, options);
+      }
+    </script>
+  </head>
+  <body>
+    <span>F1: cos(x), F2: sin(x)</span>
+    Enter N: <input type="number" placeholder="N" id="ft-n" value="8" />
+    <button onclick="calculate()">Calculate</button>
+    <span id="quantity-results"></span>
+    <div style="display: flex; flex-wrap: wrap;">
+      <div id="originalf1" style="width: 1900px; height: 500px;"></div>
+      <div id="originalf2" style="width: 1900px; height: 500px;"></div>
+      <div id="convolution-plain" style="width: 900px; height: 500px"></div>
+      <div id="convolution-fft" style="width: 900px; height: 500px"></div>
+      <div id="correlation-plain" style="width: 900px; height: 500px"></div>
+      <div id="correlation-fft" style="width: 900px; height: 500px"></div>
+    </div>
+  </body>
+</html>
