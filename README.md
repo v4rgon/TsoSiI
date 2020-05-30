@@ -1,7 +1,8 @@
 ### Steps to run
 ```
-npm i
+npm install
 ```  
+npm install -g typescript ts-node
 ```
 ts-node app.ts
 ```
