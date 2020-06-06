@@ -8,4 +8,5 @@ npm install -g typescript ts-node
 ```
 ts-node app.ts
 ```
-Открыть в браузере http://localhost:3033/
+Для 1ой лабораторной открыть в браузере http://localhost:3033/
+Для 2ой http://localhost:3033/lab2.html
